@@ -66,3 +66,11 @@ Scrapy依赖的Twisted在没有安装vc++开发工具的windows上使用默认�
 - 爬取演员和导演其实使用到了同一个函数，两者信息也几乎一样，导演的执导作品列表是通过查询
 数据库中电影的导演信息获得的。
 - 使用电影/导演/演员的名字作为其唯一标识,虽然有可能会出现重复,但是其比率应该相当低。
+
+![screenshot1](https://github.com/xzmeng/movie_spider/blob/master/screenshot/movie1.png)
+
+![screenshot2](https://github.com/xzmeng/movie_spider/blob/master/screenshot/movie2.png)
+
+![screenshot3](https://github.com/xzmeng/movie_spider/blob/master/screenshot/movie3.png)
+
+![screenshot4](https://github.com/xzmeng/movie_spider/blob/master/screenshot/movie4.png)
