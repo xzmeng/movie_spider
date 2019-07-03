@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1>{{ category }}</h1>
+    <form class="form-inline" action="{{ url_for('search') }}">
+      <select class="form-control mr-sm-2" name="type">
+        <option value="actor" {% if type == 'actor' %}selected{% endif %}>演员</option>
+        <option value="director" {% if type == 'director' %}selected{% endif %}>导演</option>
+      </select>
+      </select>
+      <input class="form-control mr-sm-2" type="text" placeholder="搜索" name="search_text">
+      <button class="btn btn-success" type="submit">搜索</button>
+    </form>
+  </div>
+  {{ pagination.info }}
+  {{ pagination.links }}
+  <div class="card-columns">
+    {% for actor in actors %}
+      {% if actor.get('type') == 'actor' %}
+        {% set url = url_for('actor_detail', name=actor.get('name')) %}
+      {% elif actor.get('type') == 'director' %}
+        {% set url = url_for('director_detail', name=actor.get('name')) %}
+      {% endif %}
+      <div class="card">
+        <a href="{{ url }}">
+          {% if actor.get('image_url') %}
+            {% set image_url = actor.get('image_url') %}
+          {% else %}
+            {% set image_url = '/static/noimage.jpg' %}
+          {% endif %}
+          <img class="card-img-top img-fluid"
+               src="{{ image_url }}"
+               alt="Card image cap">
+        </a>
+        <div class="card-body">
+          <a class="btn" href="{{ url }}"><h4 class="card-title">{{ actor.get('name') }}</h4></a>
+          <p class="card-text">intro</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {{ pagination.links }}
+
+{% endblock %}

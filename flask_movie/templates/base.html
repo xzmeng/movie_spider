@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Movie</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">我的电影</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('movie_list', category='all') }}">影视大全</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('movie_list', category='hot') }}">热门影视</a>
+      </li>
+
+      <!-- Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          影视分类
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item {% if category == '历史' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='历史') }}">历史</a>
+          <a class="dropdown-item {% if category == '剧情' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='剧情') }}">剧情</a>
+          <a class="dropdown-item {% if category == '爱情' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='爱情') }}">爱情</a>
+          <a class="dropdown-item {% if category == '喜剧' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='喜剧') }}">喜剧</a>
+          <a class="dropdown-item {% if category == '恐怖' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='恐怖') }}">恐怖</a>
+          <a class="dropdown-item {% if category == '武侠' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='武侠') }}">武侠</a>
+          <a class="dropdown-item {% if category == '古装' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='古装') }}">古装</a>
+          <a class="dropdown-item {% if category == '偶像' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='偶像') }}">偶像</a>
+          <a class="dropdown-item {% if category == '悬疑' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='悬疑') }}">悬疑</a>
+          <a class="dropdown-item {% if category == '言情' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='言情') }}">言情</a>
+          <a class="dropdown-item {% if category == '家庭' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='家庭') }}">家庭</a>
+          <a class="dropdown-item {% if category == '犯罪' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='犯罪') }}">犯罪</a>
+          <a class="dropdown-item {% if category == '动作' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='动作') }}">动作</a>
+          <a class="dropdown-item {% if category == '科幻' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='科幻') }}">科幻</a>
+          <a class="dropdown-item {% if category == '惊悚' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='惊悚') }}">惊悚</a>
+          <a class="dropdown-item {% if category == '奇幻' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='奇幻') }}">奇幻</a>
+          <a class="dropdown-item {% if category == '伦理' %}active{% endif %}"
+             href="{{ url_for('movie_list', category='伦理') }}">伦理</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('actor_list', category='actor') }}">影视人物</a>
+      </li>
+
+    </ul>
+    <form class="form-inline" action="{{ url_for('search') }}">
+      <select class="form-control mr-sm-2" name="type">
+        <option value="movie">电影</option>
+        <option value="actor" {% if category == '演员大全' %}selected{% endif %}>演员</option>
+        <option value="director" {% if category == '演员大全' %}selected{% endif %}>导演</option>
+      </select>
+      <input class="form-control mr-sm-2" type="text" placeholder="搜索" name="search_text">
+      <button class="btn btn-success" type="submit">搜索</button>
+    </form>
+  </nav>
+  <br>
+  {% block content %}
+  {% endblock %}
+</div>
+</body>
+</html>

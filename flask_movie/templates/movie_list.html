@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <style>
+
+  </style>
+  <div class="jumbotron">
+    <h1>{{ category }}</h1>
+    <p>一共找到了{{ pagination.total }}条影视记录。</p>
+    {% set categories = ['全部', '历史', '剧情', '爱情', '喜剧', '恐怖', '武侠', '古装', '偶像',
+       '悬疑', '言情', '家庭', '犯罪', '动作', '科幻', '惊悚', '奇幻', '伦理'] %}
+    <form class="form-inline" action="{{ url_for('search') }}">
+      <input type="hidden" name="type" value="movie">
+      <select class="form-control mr-sm-2" name="category">
+        {% for cat in categories %}
+          <option value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+      <input class="form-control mr-sm-2" type="text" placeholder="搜索" name="search_text">
+      <button class="btn btn-success" type="submit">搜索</button>
+    </form>
+  </div>
+  {{ pagination.info }}
+  {{ pagination.links }}
+  <div class="card-columns">
+    {% for movie in movies %}
+      <div class="card">
+        <a href="{{ url_for('movie_detail', title=movie.get('title')) }}">
+          <img class="card-img-top img-fluid"
+              {% if movie.get('image_url') %}
+                {% set image_url = movie.get('image_url') %}
+              {% else %}
+                {% set image_url = '/static/noimage.jpg' %}
+              {% endif %}
+               src="{{ image_url }}"
+               alt="Card image cap">
+        </a>
+        <div class="card-body">
+          <a class="btn" href="{{ url_for('movie_detail', title=movie.get('title')) }}">
+            <h4 class="card-title">{{ movie.get('title') }}</h4>
+          </a>
+          {% if movie.get('year') %}
+            <p>{{ movie.get('year') }}</p>
+          {% endif %}
+          <p class="card-text"></p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {{ pagination.links }}
+
+{% endblock %}

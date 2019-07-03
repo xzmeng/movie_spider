@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="jumbotron">
+    <div class="row">
+      {% if actor.get('image_url') %}
+        {% set image_url = actor.get('image_url') %}
+      {% else %}
+        {% set image_url = '/static/noimage.jpg' %}
+      {% endif %}
+      <div class="col-4">
+        <h1>&nbsp;&nbsp;{{ actor.get('name') }}</h1>
+        <br>
+        <img src="{{ image_url }}" class="img-thumbnail" alt="Cinque Terre" style="width:100%">
+      </div>
+
+      <div class="border col-8" id="map" style="height: 600px">
+      </div>
+    </div>
+
+
+  </div>
+
+  <div id="accordion">
+
+    <div class="card">
+      <div class="card-header">
+        <a class="collapsed card-link" data-toggle="collapse" href="#collapseOne">
+          人物信息
+        </a>
+      </div>
+      <div id="collapseOne" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          <table class="table table-dark">
+            <tbody>
+            {% for k, v in actor.get('info').items() %}
+              <tr>
+                <th>{{ k }}</th>
+                <td>{{ v }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <a class="{% if not show_movie %}collapsed{% endif %} card-link" data-toggle="collapse" href="#collapseTwo">
+          {% if actor.get('type') == 'actor' %}
+            影视作品
+          {% else %}
+            执导作品
+          {% endif %}
+        </a>
+      </div>
+      <div id="collapseTwo" class="collapse {% if show_movie %}show{% endif %}" data-parent="#accordion">
+        <div class="card-body">
+          {% if actor.get('type') == 'actor' %}
+            <h2 id="movies">影视作品</h2>
+          {% else %}
+            <h2 id="movies">执导作品</h2>
+          {% endif %}
+          {{ pagination.info }}
+          {{ pagination.links }}
+          <div class="card-columns">
+            {% for movie in movies %}
+              <div class="card">
+                <a href="{{ url_for('movie_detail', title=movie.get('title')) }}">
+                  <img class="card-img-top img-fluid"
+                       src="{{ movie.get('image_url') }}"
+                       alt="Card image cap">
+                </a>
+                <div class="card-body">
+                  <a class="btn" href="{{ url_for('movie_detail', title=movie.get('title')) }}">
+                    <h4 class="card-title">{{ movie.get('title') }}</h4>
+                  </a>
+                  {% set movie_info = movie.get('info') %}
+                  {% if movie_info.get('出品时间') %}
+                    <p>{{ movie_info.get('出品时间') }}</p>
+                  {% endif %}
+                  <p class="card-text"></p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          {{ pagination.links }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <script src="/static/dist.js"></script>
+  <script>
+      // 容器
+      let element = document.querySelector('#map');
+
+      let data = {
+          "nodes": [
+              {
+                  "name": "{{ actor.get('name') }}",
+                  "avatar": "{{ actor.get('image_url') }}",
+                  "role_id": 0,
+                  "group": 1,
+                  "url": "#"
+              },
+              {% for relation in relations %}
+                  {
+                      "name": "{{ relation[0].get('name') }}",
+                      "avatar": "{{ relation[0].get('image_url') }}",
+                      "role_id": {{ loop.index }},
+                      "group": 1,
+                      "url": "{{ url_for('actor_detail', name=relation[0].get('name')) }}"
+                  },
+              {% endfor %}
+          ],
+          "links": [
+              {% for relation in relations %}
+                  {
+                      "source": {{ loop.index }},
+                      "target": 0,
+                      "relation": "{{ relation[1] }}",
+                      "color": "734646"
+                  },
+              {% endfor %}
+          ],
+      }
+
+      // 创建人物关系图 svg
+      new RelationChart(element, data)
+  </script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1>{{ movie.get('title') }}</h1>
+    <br>
+    <img src="{{ movie.get('image_url') }}" class="img-thumbnail" alt="Cinque Terre">
+    <br>
+  </div>
+
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header">
+        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+          电影信息
+        </a>
+      </div>
+      <div id="collapseOne" class="collapse show" data-parent="#accordion">
+        <div class="card-body">
+          <h2>电影信息</h2>
+          <table class="table table-dark">
+            <tbody>
+            {% for k, v in movie.get('info').items() %}
+              <tr>
+                <th>{{ k }}</th>
+                <td>{{ v }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+          导演
+        </a>
+      </div>
+      <div id="collapseTwo" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          <h2>导演</h2>
+          {% if director %}
+            <div class="card" style="max-width:33%">
+              <a href="{{ url_for('director_detail', name=director.get('name')) }}">
+                <img class="card-img-top img-fluid"
+                     src="{{ director.get('image_url') }}"
+                     alt="Card image cap">
+              </a>
+              <div class="card-body">
+                <a class="btn" href="{{ url_for('director_detail', name=director.get('name')) }}">
+                  <h4 class="card-title">{{ director.get('name') }}</h4>
+                </a>
+                <p class="card-text"></p>
+              </div>
+            </div>
+          {% else %}
+            <p>数据库中没有导演信息。</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+          主要演员
+        </a>
+      </div>
+      <div id="collapseThree" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          <h2>主要演员</h2>
+          <div class="card-columns">
+            {% for actor in actors %}
+              <div class="card">
+                <a href="{{ url_for('actor_detail', name=actor.get('name')) }}">
+                  <img class="card-img-top img-fluid"
+                       src="{{ actor.get('image_url') }}"
+                       alt="Card image cap">
+                </a>
+                <div class="card-body">
+                  <a class="btn" href="{{ url_for('actor_detail', name=actor.get('name')) }}">
+                    <h4 class="card-title">{{ actor.get('name') }}</h4>
+                  </a>
+                  <p class="card-text"></p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
