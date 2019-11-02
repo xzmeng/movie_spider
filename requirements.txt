@@ -5,7 +5,7 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 pymongo==3.8.0
-Werkzeug==0.15.2
+Werkzeug==0.15.3
 asn1crypto==0.24.0
 attrs==19.1.0
 Automat==0.7.0
